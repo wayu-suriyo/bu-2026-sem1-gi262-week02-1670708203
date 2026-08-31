@@ -19,15 +19,27 @@ namespace Workshop.Student
         };
 
         // 1. declare Players variable
+        public GameObject[] Players;
 
         // 7. declare Exit variable 
+        public GameObject Exit;
 
 
         public void Start()
         {
             // 1. random player at the position <0, 0> map
+            int rPlayer = UnityEngine.Random.Range(0, Players.Length);
+            Instantiate(Players[rPlayer], new Vector2(0, 0), Quaternion.identity);
 
             // 2. create obstacles
+            int middleX = columns / 2;
+            int halfY = rows / 2;
+            for (int y = 0; y < halfY; y++)
+            {
+                int rWall = UnityEngine.Random.Range(0, wallTiles.Length);
+                GameObject obstacle = Instantiate(wallTiles[rWall], new Vector2(middleX, y), Quaternion.identity);
+                obstacle.name = "Obstacle " + middleX + "_" + y;
+            }
 
             // 3. create floor
             for (int y = 0; y < rows ; y++)
@@ -72,12 +84,12 @@ namespace Workshop.Student
             }
 
             // 6. generate item along with the saveItemMap
-            for (int y = 0; y < saveItemMap.GetLength(0); y++)
+            for (int y = 0; y < saveItemMap.GetLength(0); ++y) 
             {
-                for (int x = 0; x < saveItemMap.GetLength(1); x++)
-                {   
+                for (int x = 0; x < saveItemMap.GetLength(1); ++x)
+                {
                     string item = saveItemMap[y, x];
-                    if (!string.IsNullOrEmpty(item))
+                    if (!string.IsNullOrEmpty(item)) 
                     {
                         foreach (var food in foodTiles)
                         {
@@ -91,9 +103,9 @@ namespace Workshop.Student
                         }
                     }
                 }
-
             }
             // 7. place exit
+            Instantiate(Exit, new Vector2(columns - 1, rows - 1), Quaternion.identity);
 
         }
     }
